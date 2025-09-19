@@ -1,0 +1,101 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Dashboard - LuxeLounge Admin{% endblock %}
+
+{% block content %}
+<h2 class="text-4xl font-bold text-gray-800 mb-6">Dashboard</h2>
+
+<!-- Stat Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="stat-card">
+        <h4 class="text-gray-500">Revenue (30 days)</h4>
+        <p class="text-4xl font-bold text-gray-800 mt-2">${{ revenue_30_days }}</p>
+    </div>
+    <div class="stat-card">
+        <h4 class="text-gray-500">New Bookings (30 days)</h4>
+        <p class="text-4xl font-bold text-gray-800 mt-2">{{ new_bookings_30_days }}</p>
+    </div>
+    <div class="stat-card">
+        <h4 class="text-gray-500">Occupancy Rate</h4>
+        <p class="text-4xl font-bold text-gray-800 mt-2">{{ occupancy_rate }}</p>
+    </div>
+    <div class="stat-card">
+        <h4 class="text-gray-500">Upcoming Check-ins</h4>
+        <p class="text-4xl font-bold text-gray-800 mt-2">{{ upcoming_checkins }}</p>
+    </div>
+</div>
+
+<!-- Demand Forecast Chart -->
+<div class="bg-white p-6 rounded-xl border border-slate-200 mb-8">
+    <h3 class="text-2xl font-bold text-gray-800">Booking Demand Forecast (90 Days)</h3>
+    <div class="w-full h-96 mt-4">
+        <canvas id="forecastChart"></canvas>
+    </div>
+</div>
+
+<!-- Recent Bookings Table -->
+<div class="bg-white p-6 rounded-xl border border-slate-200">
+    <h3 class="text-2xl font-bold text-gray-800 mb-4">Recent Bookings</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="border-b border-slate-200 text-sm text-gray-500">
+                    <th class="p-3">Guest</th>
+                    <th class="p-3">Room Type</th>
+                    <th class="p-3">Dates</th>
+                    <th class="p-3">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in recent_bookings %}
+                <tr class="border-b border-slate-100">
+                    <td class="p-3">{{ booking.user.email }}</td>
+                    <td class="p-3">{{ booking.room.room_type }}</td>
+                    <td class="p-3">{{ booking.check_in|date:"M d" }} - {{ booking.check_out|date:"M d, Y" }}</td>
+                    <td class="p-3"><span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{{ booking.get_status_display }}</span></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="p-4 text-center text-gray-500">No recent bookings found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Fetch forecast data and render chart
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch("{% url 'dashboard:forecast_data' %}")
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error(data.error);
+                    return;
+                }
+                const ctx = document.getElementById('forecastChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.dates,
+                        datasets: [{
+                            label: 'Forecasted Bookings',
+                            data: data.forecast,
+                            borderColor: '#B99A7B',
+                            backgroundColor: 'rgba(185, 154, 123, 0.2)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                    }
+                });
+            });
+    });
+</script>
+{% endblock %}

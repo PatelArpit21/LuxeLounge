@@ -1,0 +1,24 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Confirm Delete - LuxeLounge Admin{% endblock %}
+
+{% block content %}
+<h2 class="text-4xl font-bold text-gray-800 mb-6">Confirm Deletion</h2>
+
+<div class="bg-white p-8 rounded-xl border border-slate-200">
+    <p class="text-lg">Are you sure you want to delete the room: <strong>{{ room.room_type }}</strong>?</p>
+    <p class="text-sm text-gray-600 mt-2">This action cannot be undone.</p>
+    
+    <form method="post" class="mt-6">
+        {% csrf_token %}
+        <div class="flex gap-4">
+            <button type="submit" class="bg-red-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-red-700 transition-colors">
+                Yes, Delete
+            </button>
+            <a href="{% url 'dashboard:room_list' %}" class="bg-slate-200 text-slate-800 px-6 py-2.5 rounded-lg font-medium hover:bg-slate-300 transition-colors">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

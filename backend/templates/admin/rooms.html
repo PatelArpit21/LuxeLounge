@@ -1,0 +1,31 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Manage Rooms - LuxeLounge Admin{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-4xl font-bold text-gray-800">Manage Rooms</h2>
+    <a href="{% url 'dashboard:room_create' %}" class="bg-[#333333] text-white px-5 py-2.5 rounded-lg font-medium hover:bg-[#B99A7B] transition-colors flex items-center">
+        <i data-feather="plus" class="w-5 h-5 mr-2"></i>Add New Room
+    </a>
+</div>
+
+<!-- Rooms Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for room in rooms %}
+    <div class="room-card bg-white p-6 rounded-xl border border-slate-200 transition-shadow hover:shadow-lg flex flex-col">
+        <div class="flex-grow">
+            <h3 class="text-2xl font-bold text-gray-800">{{ room.room_type }}</h3>
+            <p class="text-gray-500 mt-2">Rate: <span class="font-semibold text-gray-700">${{ room.rate_per_night }}</span> / night</p>
+            <p class="text-gray-500">Quantity: <span class="font-semibold text-gray-700">{{ room.quantity }}</span></p>
+        </div>
+        <div class="mt-6 border-t border-slate-100 pt-4 flex justify-end gap-4">
+            <a href="{% url 'dashboard:room_update' room.pk %}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Edit</a>
+            <!-- Delete button is now removed -->
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-gray-500 col-span-full">No rooms have been created yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}
