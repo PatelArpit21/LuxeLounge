@@ -1,0 +1,17 @@
+# Core Django
+Django
+djangorestframework
+django-cors-headers
+
+# Authentication & API
+dj-rest-auth
+django-allauth
+djangorestframework-simplejwt
+drf-spectacular
+requests
+
+# Machine Learning & Data Handling
+scikit-learn
+pandas
+numpy
+joblib
