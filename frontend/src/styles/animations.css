@@ -1,0 +1,72 @@
+/* Animation Classes */
+.anim-fade {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.anim-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.anim-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Delay classes */
+.d-1 {
+  transition-delay: 0.1s;
+}
+
+.d-2 {
+  transition-delay: 0.2s;
+}
+
+.d-3 {
+  transition-delay: 0.3s;
+}
+
+.d-4 {
+  transition-delay: 0.4s;
+}
+
+.d-5 {
+  transition-delay: 0.5s;
+}
+
+/* Slider animations */
+.slider-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 70vh;
+}
+
+.slider-inner {
+  width: 100%;
+  height: 100%;
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Hover animations */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
